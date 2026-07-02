@@ -1,0 +1,43 @@
+body { font-family: 'Noto Sans KR', sans-serif; }
+.gradient-bg {
+    background: linear-gradient(135deg, #fce4ec 0%, #f8bbd0 25%, #e1bee7 50%, #d1c4e9 75%, #bbdefb 100%);
+}
+.card-shadow { box-shadow: 0 20px 60px rgba(233, 30, 99, 0.15); }
+.btn-primary {
+    background: linear-gradient(135deg, #f06292, #e91e63);
+    transition: all 0.3s ease;
+}
+.btn-primary:hover:not(:disabled) {
+    background: linear-gradient(135deg, #e91e63, #c2185b);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(233, 30, 99, 0.4);
+}
+.btn-primary:disabled { opacity: 0.6; cursor: not-allowed; }
+.floating { animation: float 3s ease-in-out infinite; }
+@keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+}
+.pulse-heart { animation: pulseHeart 1.5s ease-in-out infinite; }
+@keyframes pulseHeart {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.15); }
+}
+.divider {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    color: #d1d5db;
+    font-size: 12px;
+}
+.divider::before, .divider::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: #e5e7eb;
+}
+.code-input {
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+}
+.code-input::placeholder { letter-spacing: 0.1em; text-transform: none; }

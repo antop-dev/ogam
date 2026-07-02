@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>공감퀴즈 💕</title>
+    <script th:src="@{/js/tailwind.cdn.js}"></script>
+    <link rel="stylesheet" th:href="@{/css/fontawesome.min.css}">
+    <link rel="stylesheet" th:href="@{/css/noto-sans-kr.css}">
+    <link rel="stylesheet" th:href="@{/css/index.css}">
+</head>
+<body class="bg-white min-h-screen flex justify-center">
+
+<main class="w-full max-w-[390px] min-h-screen flex flex-col justify-center px-8 py-10">
+
+    <div class="text-center mb-8">
+        <div class="floating mb-4">
+            <div class="text-5xl pulse-heart">💕</div>
+        </div>
+        <h1 class="text-3xl font-bold text-pink-600 mb-1">공감퀴즈</h1>
+        <p class="text-gray-400 text-sm leading-relaxed">
+            10가지 질문으로 공감률을 확인해보세요
+        </p>
+    </div>
+
+    <button
+        id="startBtn"
+        class="btn-primary w-full text-white font-bold py-4 px-6 rounded-2xl text-base mb-4"
+        onclick="createRoom()"
+    >
+        <i class="fa-solid fa-plus mr-2"></i>새 방 만들기
+    </button>
+
+    <div class="divider mb-4">또는</div>
+
+    <div id="joinSection">
+        <div class="flex gap-2">
+            <input
+                id="codeInput"
+                type="text"
+                maxlength="6"
+                placeholder="방 코드 6자리"
+                class="code-input flex-1 border-2 border-gray-200 rounded-2xl px-4 py-3 text-center text-lg font-bold text-gray-700 focus:outline-none focus:border-pink-400 transition-colors uppercase"
+                oninput="this.value = this.value.toUpperCase().replace(/[^A-Z0-9]/g, '')"
+                onkeydown="if(event.key==='Enter') joinRoom()"
+            />
+            <button
+                id="joinBtn"
+                class="bg-purple-500 hover:bg-purple-600 disabled:opacity-60 disabled:cursor-not-allowed text-white font-bold px-5 rounded-2xl transition-colors"
+                onclick="joinRoom()"
+            >
+                <i class="fa-solid fa-arrow-right"></i>
+            </button>
+        </div>
+        <p class="text-gray-400 text-xs mt-2 text-center">
+            <i class="fa-solid fa-qrcode mr-1"></i>QR 코드 스캔으로도 바로 입장할 수 있어요
+        </p>
+    </div>
+
+    <p id="errorMsg" class="mt-4 text-red-500 text-sm hidden"></p>
+
+</main>
+
+<script th:inline="javascript">
+    const CONTEXT_PATH = /*[[${contextPath}]]*/ '';
+</script>
+<script th:src="@{/js/index.js}"></script>
+</body>
+</html>
