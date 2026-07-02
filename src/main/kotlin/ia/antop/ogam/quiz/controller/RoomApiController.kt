@@ -5,6 +5,9 @@ import ia.antop.ogam.quiz.service.QuizService
 import ia.antop.ogam.quiz.service.RoomService
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
+import java.util.concurrent.ConcurrentHashMap
+import java.util.concurrent.locks.ReentrantLock
+import kotlin.concurrent.withLock
 
 @RestController
 @RequestMapping("/api/rooms")
@@ -12,6 +15,10 @@ class RoomApiController(
     private val roomService: RoomService,
     private val quizService: QuizService,
 ) {
+    // Per-room lock: ensures ready/answer writes are serialized so concurrent
+    // requests don't both read stale state and both miss the all-ready/all-answered condition.
+    private val roomLocks = ConcurrentHashMap<String, ReentrantLock>()
+    private fun roomLock(code: String) = roomLocks.computeIfAbsent(code) { ReentrantLock() }
 
     @PostMapping
     fun createRoom(): ResponseEntity<CreateRoomResponseDto> =
@@ -35,14 +42,18 @@ class RoomApiController(
         @PathVariable code: String,
         @RequestBody body: ReadyRequestDto,
     ): ResponseEntity<ReadyResponseDto> =
-        ResponseEntity.ok(roomService.markReady(code, body.playerId))
+        roomLock(code).withLock {
+            ResponseEntity.ok(roomService.markReady(code, body.playerId))
+        }
 
     @PostMapping("/{code}/answers")
     fun submitAnswer(
         @PathVariable code: String,
         @RequestBody body: SubmitAnswerRequestDto,
     ): ResponseEntity<SubmitAnswerResponseDto> =
-        ResponseEntity.ok(quizService.submitAnswer(code, body.playerId, body.seq, body.choice))
+        roomLock(code).withLock {
+            ResponseEntity.ok(quizService.submitAnswer(code, body.playerId, body.seq, body.choice))
+        }
 
     @GetMapping("/{code}/results")
     fun getResults(
