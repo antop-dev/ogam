@@ -3,7 +3,55 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>공감퀴즈 💕</title>
+    <title>공감퀴즈</title>
+    <link rel="apple-touch-icon" sizes="57x57" th:href="@{/favicon/apple-icon-57x57.png}">
+    <link rel="apple-touch-icon" sizes="60x60" th:href="@{/favicon/apple-icon-60x60.png}">
+    <link rel="apple-touch-icon" sizes="72x72" th:href="@{/favicon/apple-icon-72x72.png}">
+    <link rel="apple-touch-icon" sizes="76x76" th:href="@{/favicon/apple-icon-76x76.png}">
+    <link rel="apple-touch-icon" sizes="114x114" th:href="@{/favicon/apple-icon-114x114.png}">
+    <link rel="apple-touch-icon" sizes="120x120" th:href="@{/favicon/apple-icon-120x120.png}">
+    <link rel="apple-touch-icon" sizes="144x144" th:href="@{/favicon/apple-icon-144x144.png}">
+    <link rel="apple-touch-icon" sizes="152x152" th:href="@{/favicon/apple-icon-152x152.png}">
+    <link rel="apple-touch-icon" sizes="180x180" th:href="@{/favicon/apple-icon-180x180.png}">
+    <link rel="icon" type="image/png" sizes="192x192" th:href="@{/favicon/android-icon-192x192.png}">
+    <link rel="icon" type="image/png" sizes="32x32" th:href="@{/favicon/favicon-32x32.png}">
+    <link rel="icon" type="image/png" sizes="96x96" th:href="@{/favicon/favicon-96x96.png}">
+    <link rel="icon" type="image/png" sizes="16x16" th:href="@{/favicon/favicon-16x16.png}">
+    <link rel="manifest" th:href="@{/favicon/manifest.json}">
+    <meta name="msapplication-TileColor" content="#ffffff">
+    <meta name="msapplication-TileImage" th:content="@{/favicon/ms-icon-144x144.png}">
+    <meta name="theme-color" content="#ffffff">
+    <!-- SEO -->
+    <meta name="description" content="두 사람이 10가지 질문에 답하며 공감률을 확인하는 온라인 퀴즈 게임. 친구, 연인, 가족 누구와도 즐길 수 있는 무료 공감 테스트입니다.">
+    <meta name="keywords" content="공감퀴즈,커플퀴즈,공감률테스트,두사람퀴즈,연인퀴즈,친구퀴즈,심리테스트,공감테스트,무료퀴즈">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" th:href="${baseUrl}">
+    <!-- Open Graph -->
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="공감퀴즈">
+    <meta property="og:title" content="공감퀴즈 — 우리의 공감률은?">
+    <meta property="og:description" content="두 사람이 10가지 질문에 답하며 공감률을 확인하는 온라인 퀴즈 게임. 친구, 연인, 가족 누구와도 즐길 수 있어요.">
+    <meta property="og:image" th:content="${baseUrl + '/img/logo.png'}">
+    <meta property="og:url" th:content="${baseUrl}">
+    <meta property="og:locale" content="ko_KR">
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="공감퀴즈 — 우리의 공감률은?">
+    <meta name="twitter:description" content="두 사람이 10가지 질문에 답하며 공감률을 확인해보세요.">
+    <meta name="twitter:image" th:content="${baseUrl + '/img/logo.png'}">
+    <!-- JSON-LD -->
+    <script type="application/ld+json" th:inline="text">{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "공감퀴즈",
+  "description": "두 사람이 10가지 질문에 답하며 공감률을 확인하는 온라인 퀴즈 게임",
+  "url": "[[${baseUrl}]]",
+  "applicationCategory": "EntertainmentApplication",
+  "operatingSystem": "Web",
+  "inLanguage": "ko",
+  "isAccessibleForFree": true,
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "KRW" }
+}</script>
     <script th:src="@{/js/tailwind.cdn.js}"></script>
     <link rel="stylesheet" th:href="@{/css/fontawesome.min.css}">
     <link rel="stylesheet" th:href="@{/css/noto-sans-kr.css}">
@@ -14,11 +62,8 @@
 <main class="w-full min-h-[100dvh] flex flex-col justify-center px-6 py-10 sm:max-w-[390px] sm:mx-auto">
 
     <div class="text-center mb-8">
-        <div class="floating mb-4">
-            <div class="text-5xl pulse-heart">💕</div>
-        </div>
-        <h1 class="text-3xl font-bold text-pink-600 mb-1">공감퀴즈</h1>
-        <p class="text-gray-400 text-sm leading-relaxed">
+        <img th:src="@{/img/logo.png}" alt="공감퀴즈" class="w-44 h-44 mx-auto floating" style="object-fit: contain;" />
+        <p class="text-slate-500 text-sm leading-relaxed mt-1">
             10가지 질문으로 공감률을 확인해보세요
         </p>
     </div>
@@ -41,19 +86,19 @@
                 maxlength="6"
                 size="6"
                 placeholder="방 코드 6자리"
-                class="code-input flex-1 min-w-0 border-2 border-gray-200 rounded-2xl px-4 py-3 text-center text-lg font-bold text-gray-700 focus:outline-none focus:border-pink-400 transition-colors uppercase"
+                class="code-input flex-1 min-w-0 border-2 border-slate-200 rounded-2xl px-4 py-3 text-center text-lg font-bold text-slate-700 focus:outline-none focus:border-red-400 transition-colors uppercase bg-white"
                 oninput="this.value = this.value.toUpperCase().replace(/[^A-Z0-9]/g, '')"
                 onkeydown="if(event.key==='Enter') joinRoom()"
             />
             <button
                 id="joinBtn"
-                class="flex-shrink-0 bg-purple-500 hover:bg-purple-600 disabled:opacity-60 disabled:cursor-not-allowed text-white font-bold px-5 rounded-2xl transition-colors"
+                class="flex-shrink-0 bg-[#1a2b5c] hover:bg-[#243870] disabled:opacity-60 disabled:cursor-not-allowed text-white font-bold px-5 rounded-2xl transition-colors"
                 onclick="joinRoom()"
             >
                 <i class="fa-solid fa-arrow-right"></i>
             </button>
         </div>
-        <p class="text-gray-400 text-xs mt-2 text-center">
+        <p class="text-slate-400 text-xs mt-2 text-center">
             <i class="fa-solid fa-qrcode mr-1"></i>QR 코드 스캔으로도 바로 입장할 수 있어요
         </p>
     </div>

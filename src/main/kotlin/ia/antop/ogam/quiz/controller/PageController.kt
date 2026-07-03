@@ -14,6 +14,7 @@ class PageController(
     @GetMapping("/")
     fun home(request: HttpServletRequest, model: Model): String {
         model.addAttribute("contextPath", request.contextPath)
+        model.addAttribute("baseUrl", appProperties.baseUrl)
         return "index"
     }
 
