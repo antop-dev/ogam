@@ -1,3 +1,4 @@
+html, body { overflow-x: hidden; }
 body { font-family: 'Noto Sans KR', sans-serif; }
 .gradient-bg {
     background: linear-gradient(135deg, #fce4ec 0%, #f8bbd0 25%, #e1bee7 50%, #d1c4e9 75%, #bbdefb 100%);
