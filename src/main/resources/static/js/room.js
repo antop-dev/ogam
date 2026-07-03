@@ -5,6 +5,7 @@ let opponentAnswered = false;
 let myReady = false;
 let opponentReady = false;
 let sseSource = null;
+let currentMatchRate = 0;
 
 function showScreen(id) {
     ['waitingScreen', 'readyScreen', 'quizScreen', 'resultScreen', 'errorScreen'].forEach(s => {
@@ -22,13 +23,29 @@ function showError(msg) {
 }
 
 // ---- WAITING SCREEN ----
+function copyRoomCode() {
+    navigator.clipboard.writeText(ROOM_CODE).then(() => {
+        const icon = document.getElementById('codeIcon');
+        icon.className = 'fa-solid fa-check text-lg';
+        setTimeout(() => { icon.className = 'fa-regular fa-copy text-lg'; }, 2000);
+    });
+}
+
+function copyRoomLink() {
+    navigator.clipboard.writeText(ROOM_URL).then(() => {
+        const icon = document.getElementById('qrLinkIcon');
+        icon.className = 'fa-solid fa-check text-pink-500 text-base';
+        setTimeout(() => { icon.className = 'fa-solid fa-link text-pink-400 text-base'; }, 2000);
+    });
+}
+
 function initWaitingScreen() {
     showScreen('waitingScreen');
     document.getElementById('roomCodeDisplay').textContent = ROOM_CODE;
     new QRCode(document.getElementById('qrcode'), {
         text: ROOM_URL,
-        width: 180,
-        height: 180,
+        width: 240,
+        height: 240,
         colorDark: '#1a1a1a',
         colorLight: '#ffffff',
         correctLevel: QRCode.CorrectLevel.M
@@ -131,18 +148,18 @@ async function showResults() {
 
 function renderResults(data) {
     const rate = data.matchRate;
-    document.getElementById('matchRateText').textContent = `${rate}%`;
+    currentMatchRate = rate;
+    document.getElementById('matchRateText').textContent = `공감률 ${rate}%`;
     setTimeout(() => {
         document.getElementById('resultBar').style.width = `${rate}%`;
     }, 100);
 
-    let emoji = '💔', comment = '우리 아직 서로를 더 알아가야 해요!';
-    if (rate >= 90) { emoji = '💞'; comment = '완벽한 공감! 천생연분이에요 💕'; }
-    else if (rate >= 70) { emoji = '💕'; comment = '꽤 잘 맞는군요! 좋은 케미예요 ✨'; }
-    else if (rate >= 50) { emoji = '💛'; comment = '절반은 통했네요. 더 알아가봐요 🌸'; }
-    else if (rate >= 30) { emoji = '💙'; comment = '서로 다른 매력이 있네요 🌈'; }
+    let comment = '우리 아직 서로를 더 알아가야 해요!';
+    if (rate >= 90) { comment = '완벽한 공감! 천생연분이에요 💕'; }
+    else if (rate >= 70) { comment = '꽤 잘 맞는군요! 좋은 케미예요 ✨'; }
+    else if (rate >= 50) { comment = '절반은 통했네요. 더 알아가봐요 🌸'; }
+    else if (rate >= 30) { comment = '서로 다른 매력이 있네요 🌈'; }
 
-    document.getElementById('resultEmoji').textContent = emoji;
     document.getElementById('matchComment').textContent = comment;
 
     const list = document.getElementById('answerList');
@@ -161,18 +178,28 @@ function renderResults(data) {
     showScreen('resultScreen');
 }
 
+function openSharePopup() {
+    document.getElementById('sharePopup').classList.remove('hidden');
+}
+
+function closeSharePopup() {
+    document.getElementById('sharePopup').classList.add('hidden');
+}
+
 function copyLink() {
-    const text = `공감퀴즈 결과 공유!\n우리의 공감률은 ${document.getElementById('matchRateText').textContent} 💕\n${ROOM_URL}`;
+    closeSharePopup();
+    const text = `공감퀴즈 결과 공유!\n우리의 공감률은 ${currentMatchRate}% 💕\n${ROOM_URL}`;
     navigator.clipboard.writeText(text).then(() => alert('링크가 복사됐어요! 📋'));
 }
 
 function shareKakao() {
+    closeSharePopup();
     if (window.Kakao && Kakao.isInitialized()) {
         Kakao.Share.sendDefault({
             objectType: 'feed',
             content: {
                 title: '공감퀴즈 결과 💕',
-                description: `우리의 공감률은 ${document.getElementById('matchRateText').textContent}! 나도 테스트해봐!`,
+                description: `우리의 공감률은 ${currentMatchRate}%! 나도 테스트해봐!`,
                 imageUrl: `${BASE_URL}/img/og-image.png`,
                 link: { mobileWebUrl: ROOM_URL, webUrl: ROOM_URL },
             },
@@ -185,24 +212,26 @@ function shareKakao() {
 }
 
 function shareFacebook() {
+    closeSharePopup();
     window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(ROOM_URL)}`, '_blank', 'width=600,height=400');
 }
 
 function shareInstagram() {
+    closeSharePopup();
     navigator.clipboard.writeText(ROOM_URL).then(() => {
         alert('링크가 복사됐어요! 인스타그램 앱에서 붙여넣기 해주세요 📋');
     });
 }
 
 function shareThreads() {
-    const rate = document.getElementById('matchRateText').textContent;
-    const text = encodeURIComponent(`공감퀴즈 결과 💕 우리의 공감률은 ${rate}! #공감퀴즈`);
+    closeSharePopup();
+    const text = encodeURIComponent(`공감퀴즈 결과 💕 우리의 공감률은 ${currentMatchRate}%! #공감퀴즈`);
     window.open(`https://www.threads.net/intent/post?text=${text}%20${encodeURIComponent(ROOM_URL)}`, '_blank');
 }
 
 function shareTwitter() {
-    const rate = document.getElementById('matchRateText').textContent;
-    const text = encodeURIComponent(`공감퀴즈 결과 💕 우리의 공감률은 ${rate}! #공감퀴즈`);
+    closeSharePopup();
+    const text = encodeURIComponent(`공감퀴즈 결과 💕 우리의 공감률은 ${currentMatchRate}%! #공감퀴즈`);
     window.open(`https://twitter.com/intent/tweet?text=${text}&url=${encodeURIComponent(ROOM_URL)}`, '_blank');
 }
 
