@@ -7,7 +7,7 @@ body { font-family: 'Noto Sans KR', sans-serif; }
 .btn-primary:disabled { opacity: 0.6; cursor: not-allowed; }
 .btn-option {
     border: 2px solid #f8bbd0;
-    transition: all 0.25s ease;
+    transition: border-color 0.25s ease, transform 0.25s ease, box-shadow 0.25s ease;
 }
 .btn-option:hover:not(:disabled) { border-color: #e91e63; background: #fce4ec; transform: translateY(-2px); box-shadow: 0 6px 20px rgba(233, 30, 99, 0.2); }
 .btn-option.selected-A { border-color: #e91e63 !important; background: linear-gradient(135deg, #fce4ec, #f8bbd0) !important; }

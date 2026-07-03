@@ -68,7 +68,7 @@ async function pressStart() {
 }
 
 // ---- QUIZ SCREEN ----
-function showQuestion(seq, optionA, optionB) {
+function updateQuestion(seq, optionA, optionB) {
     currentSeq = seq;
     myChoice = null;
     opponentAnswered = false;
@@ -85,7 +85,10 @@ function showQuestion(seq, optionA, optionB) {
     btnA.disabled = false;
     btnB.disabled = false;
     document.getElementById('waitingOpponent').classList.add('hidden');
+}
 
+function showQuestion(seq, optionA, optionB) {
+    updateQuestion(seq, optionA, optionB);
     showScreen('quizScreen');
 }
 
@@ -235,7 +238,7 @@ function connectSse() {
 
     sseSource.addEventListener('QUESTION_ADVANCED', (e) => {
         const d = JSON.parse(e.data);
-        setTimeout(() => showQuestion(d.data.seq, d.data.optionA, d.data.optionB), 800);
+        setTimeout(() => updateQuestion(d.data.seq, d.data.optionA, d.data.optionB), 800);
     });
 
     sseSource.addEventListener('QUIZ_COMPLETED', () => {

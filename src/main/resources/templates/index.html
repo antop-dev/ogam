@@ -39,14 +39,15 @@
                 id="codeInput"
                 type="text"
                 maxlength="6"
+                size="6"
                 placeholder="방 코드 6자리"
-                class="code-input flex-1 border-2 border-gray-200 rounded-2xl px-4 py-3 text-center text-lg font-bold text-gray-700 focus:outline-none focus:border-pink-400 transition-colors uppercase"
+                class="code-input flex-1 min-w-0 border-2 border-gray-200 rounded-2xl px-4 py-3 text-center text-lg font-bold text-gray-700 focus:outline-none focus:border-pink-400 transition-colors uppercase"
                 oninput="this.value = this.value.toUpperCase().replace(/[^A-Z0-9]/g, '')"
                 onkeydown="if(event.key==='Enter') joinRoom()"
             />
             <button
                 id="joinBtn"
-                class="bg-purple-500 hover:bg-purple-600 disabled:opacity-60 disabled:cursor-not-allowed text-white font-bold px-5 rounded-2xl transition-colors"
+                class="flex-shrink-0 bg-purple-500 hover:bg-purple-600 disabled:opacity-60 disabled:cursor-not-allowed text-white font-bold px-5 rounded-2xl transition-colors"
                 onclick="joinRoom()"
             >
                 <i class="fa-solid fa-arrow-right"></i>
